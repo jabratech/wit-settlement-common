@@ -1,0 +1,5 @@
+package jabratech:settlement-common;
+
+world settlement {
+  export settlement-handler;
+}

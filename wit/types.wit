@@ -1,0 +1,112 @@
+interface types {
+
+    /**
+     * Record representing a settlement
+     * - id: the id of the settlement
+     * - currency: the currency of the settlement
+     * - pnl: the profit and loss of the settlement
+     * - collateral-exchange-settlement: the type of the settlement
+     * - cash-type: the type of the cash, if the settlement is cash
+     * - remaining: the remaining amount of the settlement
+     * - status: the status of the settlement
+     * - trade-id: the id of the trade
+     * - creation-date: the creation date of the settlement
+     * - spot-t2: the spot price at the end of the trade
+     */
+    record settlement {
+        id: u64,
+        currency: string,
+        pnl: f64,
+        collateral-exchange-settlement: settlement-type,
+        cash-type: settlement-cash-type,
+        remaining: f64,
+        status: settlement-status,
+        trade-id: u64,
+        creation-date: string,
+        spot-t2: f64
+    }
+
+    /**
+     * Enum representing the type of a settlement
+     * - deliverable: settlement is deliverable
+     * - cash: settlement is paid with cash
+     */
+    enum settlement-type {
+        deliverable,
+        cash
+    }
+
+    /**
+     * Enum representing the type of the cash
+     * - cash: cash settlement
+     * - perp: perpetual settlement
+     */
+    enum settlement-cash-type {
+        cash,
+        perp
+    }
+
+    /**
+     * Enum representing the status of a settlement
+     * - new: settlement is new
+     * - settled: settlement is settled
+     * - partially-settled: settlement is partially settled
+     */
+    enum settlement-status {
+        new,
+        settled,
+        partially-settled
+    }
+
+    record fetch-settlement-response {
+        code: s16,
+        message: string,
+        settlements: list<get-settlement-response>
+    }
+
+    record fetch-settlement-history-response {
+        code: s16,
+        message: string,
+        settlements: list<get-settlement-history-response>
+    }
+
+    record get-settlement-request{
+        collateral-exchange-settlement: option<settlement-type>,
+        counterparty: option<string>,
+        status: option<settlement-status>,
+        currency: option<string>
+    }
+
+    record get-settlement-response {
+        market: string,
+        trade-date: string,
+        amount: string,
+        currency: string,
+        pnl: string,
+        spot-t2: string,
+        collateral-exchange-settlement: string,
+        instrument-kind: string,
+        time: string,
+    }
+
+    record get-settlement-history-request{
+        collateral-exchange-settlement: option<settlement-type>,
+        counterparty: option<string>,
+        currency: option<string>
+    }
+
+    record get-settlement-history-response {
+        id: s32,
+        amount: f64,
+        currency: string,
+        composition: string
+    }
+
+    record post-settlement-request {
+        amount: f64,
+        cash-type: option<string>,
+        collateral-exchange-settlement: settlement-type,
+        counterparty: string,
+        currency: string
+    }
+}

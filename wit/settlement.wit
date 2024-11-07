@@ -1,0 +1,11 @@
+interface settlement-handler {
+    use types.{settlement, settlement-type, settlement-status, fetch-settlement-response, fetch-settlement-history-response, 
+        get-settlement-request, get-settlement-response, get-settlement-history-request, get-settlement-history-response, post-settlement-request};
+    use jabratech:common/types.{response};
+    
+    get: func(request: get-settlement-request) -> result<fetch-settlement-response, response>;
+    get-history: func(request: get-settlement-history-request) -> result<fetch-settlement-history-response, response>;
+    
+    insert-settlment: func (request: settlement) -> result<bool, response>;
+    post-settlment: func (request: post-settlement-request) -> result<bool, response>;
+}
